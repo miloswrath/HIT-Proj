@@ -13,8 +13,9 @@
 ## Who's working on what?
 
 ### Zak
-- [ ] test and validate mistral/ollama
+- [x] test and validate mistral/ollama
 - [ ] prompt engineer fine tune mistral/ollama
+    - fine tune based on unit test eval performance
 - [ ] set up docs/dependencies for RAG
 
 ### Eli
