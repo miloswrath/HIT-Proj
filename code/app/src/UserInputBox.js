@@ -30,7 +30,7 @@ function UserInputBox({ isExiting, addMessage }) {
                     value={userQuery}
                     onChange={handleInputChange}
                     onKeyPress={handleKeyPress}
-                    className="bg-white w-full py-4 px-6 rounded-2xl cursor-pointer text-gray-700 text-sm font-semibold"
+                    className="bg-white w-full py-4 px-6 rounded-2xl cursor-pointer text-gray-700 text-sm font-semibold focus:outline-none focus:ring-1 focus:ring-gray-800 "
                     placeholder={userQuery.length === 0 ? 'Ask a question...' : ''}
                 >
                 </input>
