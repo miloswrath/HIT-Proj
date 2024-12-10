@@ -23,7 +23,6 @@ function ChatRow({ chatContent, originatingUser }) {
 
     const [displayedText, setDisplayedText] = useState('');
     const [isTyping, setIsTyping] = useState(false);
-    const [hasTyped, setHasTyped] = useState(false);
     useEffect(() => {
         // Ensure chatContent is a string
         const sanitizedChatContent = typeof chatContent === 'string' ? chatContent : String(chatContent);

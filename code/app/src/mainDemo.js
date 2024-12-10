@@ -43,7 +43,7 @@ function Demo() {
       </div>
 
       {/* Comprehensive overview / chatbox section */}
-      <div className="w-3/5 mt-10">
+      <div className="w-3/5 mt-10 mb-40">
         <PatientOverviewChatBox />
       </div>
     </div>
