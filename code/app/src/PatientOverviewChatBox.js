@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import ChatWindow from './ChatWindow';
+import ConnectedChatWindow from './ConnectedChatWindow';
 
 function PatientOverviewChatBox() {
    const [userQuery, setUserQuery] = useState('');
@@ -27,7 +27,7 @@ function PatientOverviewChatBox() {
            Discuss and interpret your results with our AI assistant
          </span>
        </div>
-       <ChatWindow
+       <ConnectedChatWindow
          preMessageContent="What do my results mean?" 
          interpretation="CCompared to earlier results, your latest biomarker measurements show small but noticeable changes that suggest a gradual worsening in brain health. ..."
        />

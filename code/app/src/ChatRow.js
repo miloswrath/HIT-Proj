@@ -23,29 +23,59 @@ function ChatRow({ chatContent, originatingUser }) {
 
     const [displayedText, setDisplayedText] = useState('');
     const [isTyping, setIsTyping] = useState(false);
-    const [hasTyped, setHasTyped] = useState(false)
+    const [hasTyped, setHasTyped] = useState(false);
     useEffect(() => {
-        const sanitizedText = typeof chatContent === 'string' ? chatContent : String(chatContent);
+        // Ensure chatContent is a string
+        const sanitizedChatContent = typeof chatContent === 'string' ? chatContent : String(chatContent);
 
-        if (isBot && !hasTyped && sanitizedText.length > 0) {
-            setHasTyped(true)
-            let index = 0;
+        if (isBot && sanitizedChatContent.length > 0) {
+            const tokens = tokenizeHTML(sanitizedChatContent);
+            let tokenIndex = 0;
+            let charIndex = 0;
+            let currentDisplayedText = '';
+
             setIsTyping(true);
-            setDisplayedText(''); // Ensure it starts from empty
+            setDisplayedText('');
 
             const typingSpeed = 15; // milliseconds per character
+            const tagDelay = 0; // delay after a tag
+
             const type = () => {
-                if (index < sanitizedText.length) {
-                    setDisplayedText(prev => prev + sanitizedText.charAt(index)); // Add one character at a time
-                    index++;
-                    setTimeout(type, typingSpeed);
+                if (tokenIndex >= tokens.length) {
+                    setIsTyping(false);
+                    return;
+                }
+
+                const currentToken = tokens[tokenIndex];
+
+                if (currentToken.startsWith('<')) {
+                    // It's an HTML tag, append it immediately
+                    currentDisplayedText += currentToken;
+                    setDisplayedText(currentDisplayedText);
+                    tokenIndex++;
+                    // Continue typing after a small delay
+                    setTimeout(type, tagDelay);
                 } else {
-                    setIsTyping(false); // End typing
+                    // It's text, append character by character
+                    if (charIndex < currentToken.length) {
+                        currentDisplayedText += currentToken.charAt(charIndex);
+                        setDisplayedText(currentDisplayedText);
+                        charIndex++;
+                        setTimeout(type, typingSpeed);
+                    } else {
+                        // Move to next token
+                        tokenIndex++;
+                        charIndex = 0;
+                        // Small delay before next token
+                        setTimeout(type, tagDelay);
+                    }
                 }
             };
+
             type();
         }
-    }, [isBot, chatContent, hasTyped]);    const contentToRender = isBot ? displayedText : chatContent;
+    }, [isBot, chatContent]);  
+    const contentToRender = isBot ? displayedText : chatContent;
 
     return (
         <div className={`w-full flex flex-row transform transition-transform duration-300 animate-popIn`}>

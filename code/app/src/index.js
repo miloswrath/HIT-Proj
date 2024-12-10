@@ -3,13 +3,11 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Demo from './mainDemo';
-import ChatWindow from './ChatWindow';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Demo/>
-    {/*<ChatWindow/>*/}
   </React.StrictMode>
 );
 
