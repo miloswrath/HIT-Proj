@@ -10,7 +10,7 @@ function PreMessage({ chatContent, onClick, isExiting }) {
             {/* PreMessage Content */}
             <div className="w-8/9 flex flex-row justify-end">
                 <div
-                    className="bg-white w-full py-4 px-6 rounded-2xl border border-gray-500 cursor-pointer hover:p-5 transition-all duration-300"
+                    className="bg-white w-full py-4 px-6 rounded-2xl border border-gray-500 cursor-pointer hover:px-8 transition-all duration-300"
                     onClick={onClick}
                     role="button"
                     tabIndex={0}
