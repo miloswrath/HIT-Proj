@@ -15,6 +15,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.post("/api/messages")
 async def handle_messages(request: Request):
     data = await request.json()
@@ -22,7 +23,6 @@ async def handle_messages(request: Request):
     previous_messages = data.get("previousMessages", [])
 
     user_query = current_message.get("chatContent", "")
-
     result = subprocess.run(["python", "query_data.py", user_query], capture_output=True, text=True)
     if result.returncode != 0:
         return JSONResponse(status_code=500, content={"error": "Error running query script."})

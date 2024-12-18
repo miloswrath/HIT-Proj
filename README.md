@@ -1,6 +1,6 @@
 # Repository for all code, data, and documentation related to the Health Informatics Topics Course Final Project
 
-## tree explanation
+## tree explanation -> explains the folder structure of this repository
 
 ### docs
 - contains all documentation related to the project

@@ -43,8 +43,11 @@ function Demo() {
       </div>
 
       {/* Comprehensive overview / chatbox section */}
-      <div className="w-3/5 mt-10 mb-40">
+      <div className="w-3/5 mt-10 mb-20">
         <PatientOverviewChatBox />
+      </div>
+      <div className="mb-20"> 
+        A CapRx Demo for CS:3980 by Zak, Eli, Haleigh, and Mike
       </div>
     </div>
   );
