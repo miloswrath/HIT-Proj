@@ -3,25 +3,14 @@
 ## tree explanation
 
 ### docs
-- contains all documentation related to the project
-- contains SBIR documentation for final submission
+- `docs` contains all documentation related to the project
+- `docs/sbir` contains SBIR documentation for final submission
+- `docs/final.pdf` contains a concatenated version of each of the docs required for the SBIR application. ***THIS SHOULD BE THE MAIN RESOURCE FOR LOOKING AT ALL SBIR APPLICATION INFO***
 
 ### code
 - `code/app` is all the UI/UX as well as code for prototyping the tool
-- `code` also contains files related to analyzing Synthea FHIR dataset (used for RAG)
-
-## Who's working on what?
-
-### Zak
-- [x] test and validate mistral/ollama
-- [ ] prompt engineer fine tune mistral/ollama
-    - fine tune based on unit test eval performance
-- [ ] set up docs/dependencies for RAG
-
-### Eli
-- [ ]
+- `code/model` contains all of the code and data for creating the RAG app
+- `code/model/data` also contains files related to analyzing Synthea FHIR dataset (used for RAG)
 
 
 
-### Mike
-- [ ]
