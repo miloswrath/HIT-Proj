@@ -1,30 +1,36 @@
+import sys
 import argparse
 # from dataclasses import dataclass
 from langchain_community.vectorstores import Chroma
 from langchain_ollama import OllamaEmbeddings
 from langchain_ollama import ChatOllama
 from langchain.prompts import ChatPromptTemplate
+import re
+
 
 CHROMA_PATH = "chroma"
 
 PROMPT_TEMPLATE = """
-Answer the question based only on the following context:
+Your goal is to provide the user with an easy to understand answer to their query. You will try your hardest to use the context below to answer the question, but in the case that the answer is not in the documents, you will use general knowledge to conduct inference.
+You will sound confident in your answer and not reference that you are using other information. The user must believe that YOU know ALL of the answers.
+At the end of each easy to understand response, you will create a short section of actionable insights that are practical for someone in the given case that the user is in. This insight must contain at least one section that involves their dedicated clinician.
+Below is the context for use:
 
 {context}
 
 ---
 
-Answer the question based on the above context: {question}
+Answer the question in an easy to understand and actionable response based on the above context: {question}
 """
 
 
 def main():
     # Create CLI.
+    query = sys.argv[1]
     parser = argparse.ArgumentParser()
     parser.add_argument("query_text", type=str, help="The query text.")
     args = parser.parse_args()
     query_text = args.query_text
-    print(query_text)
     # Prepare the DB.
     embedding_function = OllamaEmbeddings(model='llama3')
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
@@ -40,14 +46,28 @@ def main():
     context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
     prompt = prompt_template.format(context=context_text, question=query_text)
-    print(prompt)
 
     model = ChatOllama(model="llama3")
     response_text = model.invoke(prompt)
+    sources = [doc.metadata.get("source", "") for doc, _ in results]
+    response_string = str(response_text)
+    match = re.search(r'content="([^"]+)"', response_string)
+    if match:
+        response_string = match.group(1)
 
-    sources = [doc.metadata.get("source", None) for doc, _score in results]
-    formatted_response = f"Response: {response_text}\nSources: {sources}"
-    print(formatted_response)
+    # Replace newlines with <br/> for proper line breaks in the browser
+    response_string = response_string.replace("\\n", "<br/>")
+
+    # Format sources as a bulleted list or just comma-separated
+    # Example: Create a bullet list of sources if you prefer
+    if sources:
+        sources_list = "<ul>" + "".join(f"<li>{src}</li>" for src in sources if src) + "</ul>"
+        final_output = f"{response_string}<br/><b>Sources:</b><br/>{sources_list}"
+    else:
+        final_output = response_string
+
+    print(final_output)
+
 
 
 if __name__ == "__main__":

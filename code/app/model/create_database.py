@@ -4,6 +4,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema import Document
 from langchain_ollama import OllamaEmbeddings
 from langchain_community.vectorstores import Chroma
+from langchain_community.vectorstores.utils import filter_complex_metadata
 from langchain_community.document_loaders import PyPDFLoader
 from dotenv import load_dotenv
 import os
@@ -27,12 +28,11 @@ def main():
 def generate_data_store():
     directory_loader = CustomDirectoryLoader(directory_path="data", glob_pattern="**/*.pdf", mode="elements")
     documents = directory_loader.load()
+    documents = filter_complex_metadata(documents)
     chunks = split_text(documents)
     save_to_chroma(chunks)
 
 from typing import List
-from langchain_core.documents import Document
-from langchain_community.document_loaders.unstructured import UnstructuredFileLoader
 
 class CustomDirectoryLoader:
     def __init__(self, directory_path: str, glob_pattern: str = "*.*", mode: str = "single"):
@@ -80,11 +80,10 @@ def split_text(documents: list[Document]):
 
 
 def save_to_chroma(chunks: list[Document]):
-    # Clear out the database first.
+
     if os.path.exists(CHROMA_PATH):
         shutil.rmtree(CHROMA_PATH)
 
-    # Create a new DB from the documents.
     db = Chroma.from_documents(
         chunks, OllamaEmbeddings(model="llama3"), persist_directory=CHROMA_PATH
     )
