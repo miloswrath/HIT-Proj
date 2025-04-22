@@ -21,9 +21,7 @@ function ChatProfileBubble({ user }) {
                         stroke="#4b5563"
                     />
                 </svg>
-            
         )
-        
     }
     </div>);
 }
